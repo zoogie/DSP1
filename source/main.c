@@ -292,7 +292,7 @@ int main(int argc, char** argv)
 		else break;
 	}
 	
-	printf("\n\nPress Start to exit.\n");
+	printf("\n\nSTART: Exit to home menu.\n    B: Delete this app then exit to home menu.\n");
 	// Main loop
 	while (aptMainLoop())
 	{
@@ -301,6 +301,15 @@ int main(int argc, char** argv)
 		u32 kDown = hidKeysDown();
 		if (kDown & KEY_START)
 			break; // break in order to return to hbmenu
+		else if (kDown & KEY_B)
+		{
+			amInit();
+			res = AM_DeleteAppTitle(MEDIATYPE_SD, (u64)0x0004000000D59100);
+			if(res) printf("\nSelf-delete failed, call in the FBI!\n");
+			else    printf("\nSelf-delete success!\n");
+			svcSleepThread(500*1000*1000);
+			break;
+		}
 
 		// Flush and swap framebuffers
 		gfxFlushBuffers();
