@@ -303,12 +303,22 @@ int main(int argc, char** argv)
 			break; // break in order to return to hbmenu
 		else if (kDown & KEY_B)
 		{
-			amInit();
-			res = AM_DeleteAppTitle(MEDIATYPE_SD, (u64)0x0004000000D59100);
-			if(res) printf("\nSelf-delete failed, call in the FBI!\n");
-			else    printf("\nSelf-delete success!\n");
-			svcSleepThread(500*1000*1000);
-			break;
+			if (argc >= 1)
+			{
+				if(remove(argv[0]) != 0) printf("\nSelf-delete failed!\n");
+				else printf("\nSelf-delete successful!\n");
+				svcSleepThread(500*1000*1000);
+				break;
+			}
+			else
+			{
+				amInit();
+				res = AM_DeleteAppTitle(MEDIATYPE_SD, (u64)0x0004000000D59100);
+				if(res) printf("\nSelf-delete failed, call in the FBI!\n");
+				else    printf("\nSelf-delete successful!\n");
+				svcSleepThread(500*1000*1000);
+				break;
+			}
 		}
 
 		// Flush and swap framebuffers
